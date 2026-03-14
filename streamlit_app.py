@@ -9,6 +9,8 @@ st.set_page_config(
     page_title='Dashboard'
 )
 
+st.set_page_config(layout="wide")
+
 st.title("Average Participation in US Imports 2023-2025")
 
 # -----------------------------------------------------------------------------
@@ -35,25 +37,25 @@ def get_gdp_data():
 
 df = get_gdp_data()
 
-img_03 = alt.Chart(df, title="").mark_circle().encode(
-    alt.X('el_salvador:Q').title("El Salvador"),
-    alt.Y('participation_in_us_imports_china:Q').title("China"),
+img_03 = alt.Chart(df, title="").mark_circle(
+        opacity=0.7,
+        stroke='black',
+        strokeWidth=1.2,
+        strokeOpacity=0.9,
+        size = 100,
+).encode(
+    alt.X('el_salvador:Q').scale(type="log").title("El Salvador [Millions-USD]"),
+    alt.Y('participation_in_us_imports_china:Q').title("China [Millions-USD]"),
     alt.Size("total_for_all_countries").title("Total for All Countries(Millions-USD)"), 
-    alt.Color("participation_in_us_imports_mexico").title("Mexico"), 
+    alt.Color("participation_in_us_imports_mexico", 
+                    scale=alt.Scale(scheme='cividis')).title("Mexico [%]"), 
     alt.Text("description"), 
     tooltip=["description"]
+).properties(
+    width=1200,  # Set a fixed width in pixels
+    height=400  # Set a fixed height in pixels
 )
 
-# Text layer with specific formatting
-text_03 = alt.Chart(df).mark_text(
-    align='left',
-    baseline='middle',
-    dx=3 # Offset the text slightly to the right of the bar
-).encode(
-    alt.X('el_salvador:Q').scale(type="log"),
-    alt.Y('participation_in_us_imports_china:Q'),
-    alt.Text("hs8")
-)
 
-st.altair_chart(img_03 + text_03)
+st.altair_chart(img_03, use_container_width=False)
 
