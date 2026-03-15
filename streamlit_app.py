@@ -14,7 +14,7 @@ pages = {
     "Products Subject to Section 232": [
         st.Page("products.py", title="El Salvador exports to U.S.A > 0"),
     ],
-    "Tabla" : [
+    "Table" : [
         st.Page("table.py", title = "Table"),
     ]
 }
